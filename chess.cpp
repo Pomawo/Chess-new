@@ -13,12 +13,16 @@
 | R |
 -----
 
-change txtcolor of piece place
+! Download "Better Comments" extension from Aarom Bondit
+
+TODO: Зробити нормальний інпут. Я хотів аби гравець міг написати "Board" та виконалась функція drawField(). Для цього ми будемо записувати std::cin >> input; нову змінну. Тоді перевіримо її на технічні терміни, такі як я запропонував "Board", і тоді розіб'ємо ввід гравця у форматі "a2>a4" чи подібний, і перекладемо на нашу систему координат, що зараз є. 
+
+? Я не знаю що я собі думаю, не дрімаючи в 2 години ночі в день НМТ. Я просто не міг заснути, напевно 
 
 */
 
-int whiteKing[2] {0, 3};
-int blackKing[2] {7, 3};
+int whiteKing[2] = {0, 3};
+int blackKing[2] = {7, 3};
 
 struct {
     int x;
@@ -46,7 +50,7 @@ char pieces[8][8] = {
     /*0*/ {'r','n','b', 0,'q','b','n','r'}, /*char = 8*/
     /*1*/ {'p','p','p','p','p','p','p','p'}, /*char = 7*/
     /*2*/ { 0,  0,  0,  0,  0,  0,  0,  0 }, /*char = 6*/
-    /*3*/ { 0,'k',  0,  0,  0,  0,  0,  0 }, /*char = 5*/
+    /*3*/ { 0,'k',  'b',  0,  0,  0,  0,  0 }, /*char = 5*/
     /*4*/ { 0,  0,  0,  0,  0,  0,  0,  0 }, /*char = 4*/
     /*5*/ { 0,  0,  0,  0,  0,  0,  0,  0 }, /*char = 3*/
     /*6*/ {'P','P','P','P','P','P','P','P'}, /*char = 2*/
@@ -55,7 +59,7 @@ char pieces[8][8] = {
 
 bool movementCheck() {
     piece = oldPiece;
-    if (oldPiece == 'n') {
+    if (oldPiece == 'n') {     // *                 KNIGHT
         if (newPiece != 0 && newPiece == (smallPieces)) {
             std::cout << " check 1.1 " << std::endl;
             return false;
@@ -82,7 +86,7 @@ bool movementCheck() {
         }
     }
 
-    else if (oldPiece == 'k') {
+    else if (oldPiece == 'k') {     // *                 KING
         if (newPiece != 0 && newPiece == (smallPieces)) {
             std::cout << " check 1.1 " << std::endl;
             return false;
@@ -90,7 +94,7 @@ bool movementCheck() {
         else if (newTile.x != oldTile.x || newTile.y != oldTile.y) {
             for (int a = 1; a > -2; a--) {
                 for (int b = 1; b > -2; b--) {
-                    if (newTile.y == blackK.y + a && newTile.x == blackK.x + b) { //detecting if our King going to touch enemy's King clothest zones
+                    if (newTile.y == blackK.y + a && newTile.x == blackK.x + b) { //detecting if our King going to touch enemy's King closest zones          EDIT: Mate you've spelled "closest" as "clothest" :)
                         std::cout << " check 2 " << std::endl;
                         return false;
                     }
@@ -110,31 +114,62 @@ bool movementCheck() {
         else {
             return false;
         }
+            std::cout << "penisesigtigtigtir";
     }
     
-    // else if (oldPiece == 'b') {
-    //     if (newPiece != 0 && newPiece == (smallPieces)) {
-    //         std::cout << " check 1.1. No cannibalism allowed. " << std::endl;
-    //         return false;
-    //     }
-    //     else if (abs(newTile.x - oldTile.y) != abs(newTile.y - oldTile.y)) {
-    //         return false;
-    //     }
-    //     else if (newTile.x > oldTile.x) {
-    //          for (int dif = 1; dif < abs(newTile.x - oldTile.x); dif++) {
-    //              if(pieces[newTile.y+dif][newTile.x+dif] == (smallPieces)) {
-    //                  return false;
-    //              }
-    //          }
-    //     }
-    // }
-    else if (oldPiece == 'r') {
+    else if (oldPiece == 'b') {     // *            BISHOP
+        if (newPiece != 0 && newPiece == (smallPieces) ) {
+            std::cout << " check 1.1. No cannibalism allowed. " << std::endl;
+            return false;
+        }
+        else if (abs(newTile.x - oldTile.x) != abs(newTile.y - oldTile.y)) {
+            std::cout << " check 1.2. Not diagonal movement. " << std::endl;
+            return false;
+        }
+        else if (newTile.x < oldTile.x && newTile.x < newTile.y) {
+             for (int dif = 1; dif < abs(newTile.x - oldTile.x) - 1; dif++) {
+                 if(pieces[oldTile.y-dif][oldTile.x-dif] == (smallPieces) || pieces[oldTile.y-dif][oldTile.x-dif] == (bigPieces)) {
+                    std::cout << " check 2.1. - - Fail. " << std::endl;
+                    return false;
+                 }
+             }
+        }
+        else if (newTile.x > oldTile.x && newTile.x > newTile.y) {
+             for (int dif = 1; dif < abs(newTile.x - oldTile.x) - 1; dif++) {
+                 if(pieces[oldTile.y+dif][oldTile.x+dif] == (smallPieces) || pieces[oldTile.y+dif][oldTile.x+dif] == (bigPieces)) {
+                    std::cout << " check 2.2. + + Fail. " << std::endl;
+                    return false;
+                 }
+             }
+        }
+        else if (newTile.x < oldTile.x && newTile.x > newTile.y) {
+             for (int dif = 1; dif < abs(newTile.x - oldTile.x) - 1; dif++) {
+                 if(pieces[oldTile.y+dif][oldTile.x-dif] == (smallPieces) || pieces[oldTile.y+dif][oldTile.x-dif] == (bigPieces)) {
+                    std::cout << " check 2.3. - + Fail. " << std::endl;
+                    return false;
+                 }
+             }
+        }
+        else if (newTile.x > oldTile.x && newTile.x < newTile.y) {
+             for (int dif = 1; dif < abs(newTile.x - oldTile.x) - 1; dif++) {
+                 if(pieces[oldTile.y-dif][oldTile.x+dif] == (smallPieces) || pieces[oldTile.y-dif][oldTile.x+dif] == (bigPieces)) {
+                    std::cout << " check 2.4. + - Fail. " << std::endl;
+                    return false;
+                 }
+             }
+        }
+        else {
+            std::cout << " check 3 " << std::endl;
+            return true;
+        }
+    }
+    else if (oldPiece == 'r') {     // *                 ROOK
     
     }
-    else if (oldPiece == 'q') {
+    else if (oldPiece == 'q') {     // *                 QUEEN
     
     } 
-    else if (oldPiece == 'p') {
+    else if (oldPiece == 'p') {     // *                 PAWN
     
     }
     std::cout << " All the way through " << std::endl;
@@ -157,8 +192,8 @@ void drawField() {
 };
 
 void replace() {
-    pieces[newTile.y][newTile.x] = pieces[oldTile.y][oldTile.x];
-    pieces[oldTile.y][oldTile.x] = 0;
+    newPiece = oldPiece;
+    oldPiece = 0;
 };
 
 void input() {
@@ -170,26 +205,36 @@ void input() {
     }
 };
 
+void log() {
+    std::cout <<std::endl << std::endl << std::endl << "LOG: " << std::endl << std::endl << "oldTile.x: " << oldTile.x << ", oldTile.y: " << oldTile.y << ", old piece: " << oldPiece << std::endl << "newTile.x: " << newTile.x << ", newTile.y: " << newTile.y << ", new piece: " << newPiece << std::endl << "movementCheck result:" << movementCheck() << std::endl;
+
+
+}
+
 int main() {
-    whiteK.y = whiteKing[0];
-    whiteK.x = whiteKing[1];
-    blackK.y = blackKing[0];
-    blackK.x = blackKing[1];
-    drawField();
-    while (1) {
-    std::cin >> oldTile.y >> oldTile.x >> newTile.y >> newTile.x;
-    if (movementCheck() == true) {
-        replace();
-    }
-    else {
-        std::cout << "try again\n";
-    }
-    drawField();
-    std::cout << movementCheck() << std::endl;
-    std::cout << "LOG: " << std::endl << std::endl << "oldTile.x: " << oldTile.x << ", oldTile.y: " << oldTile.y << ", old piece: " << oldPiece << std::endl << "newTile.x: " << newTile.x << ", newTile.y: " << newTile.y << ", new piece: " << newPiece << std::endl << "movementCheck result: " << movementCheck() << std::endl;
+whiteK.y = whiteKing[0];
+whiteK.x = whiteKing[1];
+blackK.y = blackKing[0];
+blackK.x = blackKing[1];
+
+
+drawField();
+while (1) {
+    std::cin >> oldTile.x >> oldTile.y >> newTile.x >> newTile.y;
+    if(std::cin.fail()) {
+        std::cout << "Wrong input. Input must be a number. Err 01" << std::endl;// To change as we go
+        std::cin.clear();
+        std::cin.ignore();
+    } else {
+        if (movementCheck()) {
+            replace();
+        }
+        else {
+            std::cout << "Incorrect input. Try again. Err 02\n";
+            log();
+        }
+        drawField();
     };
 };
+};
 
-
-
-// std::cout << "LOG: " << std::endl << std::endl << "oldTile.x: " << oldTile.x << ", oldTile.y: " << oldTile.y << ", old piece: " << oldPiece << std::endl << "newTile.x: " << newTile.x << ", newTile.y: " << newTile.y << ", new piece: " << newPiece << std::endl << "movementCheck result: " << movementCheck() << std::endl;
