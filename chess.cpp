@@ -87,7 +87,7 @@ bool movementCheck() {
     }
 
     else if (oldPiece == 'k') {     // *                 KING
-        if (newPiece != 0 && newPiece == (smallPieces)) {
+        if (newPiece == (smallPieces)) {
             std::cout << " check 1.1 " << std::endl;
             return false;
         }
@@ -114,7 +114,7 @@ bool movementCheck() {
         else {
             return false;
         }
-            std::cout << "penisesigtigtigtir";
+            std::cout << "scsadawqqdcfdqaSADC";
     }
     
     else if (oldPiece == 'b') {     // *            BISHOP
