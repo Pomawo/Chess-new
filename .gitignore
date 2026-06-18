@@ -1,6 +1,4 @@
 .vscode/
-.vscode/launch.json
-.vscode/tasks.json
 SNAKE_ABSOLUT.cpp
 SNAKE_ABSOLUT.exe
 SNAKE_ABSOLUT1.cpp
@@ -8,3 +6,7 @@ SNAKE_ABSOLUT1.exe
 test-cpp.cpp
 test-cpp.exe
 chess.exe
+todo/
+build/
+CMakeLists.txt
+todo/

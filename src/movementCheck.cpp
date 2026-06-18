@@ -1,61 +1,9 @@
-#include <iostream>
-#include <cmath>
+#include "../include/global.h"
+#include "../include/movementCheck.h"
 
-#define oldPiece pieces[oldTile.y][oldTile.x]
-#define newPiece pieces[newTile.y][newTile.x]
-#define smallPieces (piece) == 'r'| (piece) == 'n'| (piece) == 'b'| (piece) == 'k'| (piece) == 'q'| (piece) == 'p'
-#define bigPieces (piece) == 'R'| (piece) == 'N'| (piece) == 'B'| (piece) == 'K'| (piece) == 'Q'| (piece) == 'P'
-
-/*
------
-| P |
------
-| R |
------
-
-! Download "Better Comments" extension from Aarom Bondit
-
-TODO: Зробити нормальний інпут. Я хотів аби гравець міг написати "Board" та виконалась функція drawField(). Для цього ми будемо записувати std::cin >> input; нову змінну. Тоді перевіримо її на технічні терміни, такі як я запропонував "Board", і тоді розіб'ємо ввід гравця у форматі "a2>a4" чи подібний, і перекладемо на нашу систему координат, що зараз є. 
-
-? Я не знаю що я собі думаю, не дрімаючи в 2 години ночі в день НМТ. Я просто не міг заснути, напевно 
-
-*/
 
 int whiteKing[2] = {0, 3};
 int blackKing[2] = {7, 3};
-
-struct {
-    int x;
-    int y;
-} whiteK, blackK;
-
-struct {
-    int x;
-    int y;
-} oldTile, newTile;
-
-char piece; 
-
-char field[8][8] = {
-    {' ','#',' ','#',' ','#',' ','#'},
-    {'#',' ','#',' ','#',' ','#',' '},
-    {' ','#',' ','#',' ','#',' ','#'},
-    {'#',' ','#',' ','#',' ','#',' '},
-    {' ','#',' ','#',' ','#',' ','#'},
-    {'#',' ','#',' ','#',' ','#',' '},
-    {' ','#',' ','#',' ','#',' ','#'},
-    {'#',' ','#',' ','#',' ','#',' '}
-};
-char pieces[8][8] = {
-    /*0*/ {'r','n','b', 0,'q','b','n','r'}, /*char = 8*/
-    /*1*/ {'p','p','p','p','p','p','p','p'}, /*char = 7*/
-    /*2*/ { 0,  0,  0,  0,  0,  0,  0,  0 }, /*char = 6*/
-    /*3*/ { 0,'k',  'b',  0,  0,  0,  0,  0 }, /*char = 5*/
-    /*4*/ { 0,  0,  0,  0,  0,  0,  0,  0 }, /*char = 4*/
-    /*5*/ { 0,  0,  0,  0,  0,  0,  0,  0 }, /*char = 3*/
-    /*6*/ {'P','P','P','P','P','P','P','P'}, /*char = 2*/
-    /*7*/ {'R','N','B','K','Q','B','N','R'}  /*char = 1*/ // 8 - char
-};
 
 bool movementCheck() {
     piece = oldPiece;
@@ -87,6 +35,7 @@ bool movementCheck() {
     }
 
     else if (oldPiece == 'k') {     // *                 KING
+      std::cout << "efdxhufisdgchdsei9vrsv9iuihsiedfbrehsihkd";
         if (newPiece == (smallPieces)) {
             std::cout << " check 1.1 " << std::endl;
             return false;
@@ -118,6 +67,7 @@ bool movementCheck() {
     }
     
     else if (oldPiece == 'b') {     // *            BISHOP
+      std::cout << "fdizxbhjiwfesroiaewjoseifg";
         if (newPiece != 0 && newPiece == (smallPieces) ) {
             std::cout << " check 1.1. No cannibalism allowed. " << std::endl;
             return false;
@@ -176,79 +126,3 @@ bool movementCheck() {
     return false;
 
 }
-
-void drawField() {
-    for (int i = 0; i < 33; i++) {
-        std::cout << '-';
-    }
-    std::cout << std::endl;
-    for (int y = 0; y < 8; y++){
-        std::cout << '|';
-        for(int x = 0; x < 8; x++) {
-            if (pieces[y][x] == 0) {
-                if (x == 0) {
-                    std::cout << ' ' << field[y][x] << ' ' << '|';
-                }
-                else {
-                    std::cout << ' ' << field[y][x] << ' ' << '|';
-                }
-            }
-            else {
-                std::cout << ' ' << pieces[y][x] << ' ' << '|';
-            }
-        }
-        std::cout << std::endl;
-        for (int i = 0; i < 33; i++) {
-            std::cout << '-';
-        }
-        std::cout << std::endl;
-    }
-};
-
-void replace() {
-    newPiece = oldPiece;
-    oldPiece = 0;
-};
-
-void input() {
-    try {
-        throw 404;
-    }
-    catch (...){
-        std::cout << "Incorrect input";
-    }
-};
-
-void log() {
-    std::cout <<std::endl << std::endl << std::endl << "LOG: " << std::endl << std::endl << "oldTile.x: " << oldTile.x << ", oldTile.y: " << oldTile.y << ", old piece: " << oldPiece << std::endl << "newTile.x: " << newTile.x << ", newTile.y: " << newTile.y << ", new piece: " << newPiece << std::endl << "movementCheck result:" << movementCheck() << std::endl;
-
-
-}
-
-int main() {
-whiteK.y = whiteKing[0];
-whiteK.x = whiteKing[1];
-blackK.y = blackKing[0];
-blackK.x = blackKing[1];
-
-
-drawField();
-while (1) {
-    std::cin >> oldTile.x >> oldTile.y >> newTile.x >> newTile.y;
-    if(std::cin.fail()) {
-        std::cout << "Wrong input. Input must be a number. Err 01" << std::endl;// To change as we go
-        std::cin.clear();
-        std::cin.ignore();
-    } else {
-        if (movementCheck()) {
-            replace();
-        }
-        else {
-            std::cout << "Incorrect input. Try again. Err 02\n";
-            log();
-        }
-        drawField();
-    };
-};
-};
-
