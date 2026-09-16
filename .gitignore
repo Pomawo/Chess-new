@@ -10,3 +10,4 @@ todo/
 build/
 CMakeLists.txt
 todo/
+build.ps1
